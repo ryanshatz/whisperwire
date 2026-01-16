@@ -18,35 +18,20 @@ By participating in this project, you are expected to uphold our Code of Conduct
 
 Before creating bug reports, please check the existing issues to avoid duplicates. When you create a bug report, include as many details as possible:
 
-- **Use a clear and descriptive title**
-- **Describe the exact steps to reproduce the problem**
-- **Describe the behavior you observed and what you expected**
-- **Include screenshots if applicable** (especially for UI issues)
-- **Include your environment details:**
-  - OS and version
-  - Node.js version
-  - Rust version (if using Tauri desktop app)
-  - Ollama version (if using LLM mode)
+- Use a clear and descriptive title
+- Describe the exact steps to reproduce the problem
+- Describe the behavior you observed and what you expected
+- Include screenshots if applicable
+- Include your environment details (OS, Node version, Rust version, browser, etc.)
 
 ### Suggesting Enhancements
 
 Enhancement suggestions are tracked as GitHub issues. When creating an enhancement suggestion:
 
-- **Use a clear and descriptive title**
-- **Provide a detailed description of the proposed enhancement**
-- **Explain why this enhancement would be useful** for compliance monitoring
-- **Include mockups or examples if applicable**
-- **Consider privacy implications** – Whisperwire is local-first by design
-
-### Adding New Compliance Rules
-
-One of the best ways to contribute is by adding new TCPA rules or improving detection accuracy:
-
-1. Review existing rules in `rules/tcpa-rules.yaml`
-2. Follow the established YAML schema
-3. Include trigger phrases, regex patterns, and metadata checks
-4. Add corresponding frontend rules in `app/src/lib/rules.ts`
-5. Test thoroughly with realistic call scenarios
+- Use a clear and descriptive title
+- Provide a detailed description of the proposed enhancement
+- Explain why this enhancement would be useful for compliance monitoring
+- Include mockups or examples if applicable
 
 ### Pull Requests
 
@@ -61,9 +46,9 @@ One of the best ways to contribute is by adding new TCPA rules or improving dete
 
 ### Prerequisites
 
-- **Node.js** 18+ (required)
-- **pnpm** or **npm** (package manager)
-- **Rust** (only required for Tauri desktop app)
+- **Node.js** 18+
+- **npm** or **pnpm**
+- **Rust** (for Tauri development)
 - **Ollama** (optional, for LLM mode testing)
 
 ### Getting Started
@@ -76,36 +61,25 @@ cd whisperwire
 # Add upstream remote
 git remote add upstream https://github.com/ryanshatz/whisperwire.git
 
-# Navigate to app directory
+# Install frontend dependencies
 cd app
-
-# Install dependencies
 npm install
 
-# Start development server
+# Start development (web mode)
 npm run dev
+
+# Or start Tauri development (requires Rust)
+npm run tauri dev
 ```
 
-The application will open at **http://localhost:3000**
-
-### Building Desktop App (Tauri)
+### Optional: LLM Mode Setup
 
 ```bash
-# Ensure Rust is installed
-rustup update
-
-# Build for development
-npm run tauri:dev
-
-# Build for production
-npm run tauri:build
-```
-
-### Testing LLM Mode
-
-```bash
-# Install and start Ollama
+# Install Ollama from https://ollama.ai
+# Pull a model
 ollama pull llama3.2:1b
+
+# Start Ollama server
 ollama serve
 ```
 
@@ -133,28 +107,27 @@ whisperwire/
 │           ├── rules.rs      # Rule definitions (YAML format)
 │           └── database.rs   # SQLite storage
 │
-├── rules/                    # TCPA rule definitions
-│   └── tcpa-rules.yaml
-│
 ├── docs/                     # Documentation
 │   ├── architecture.md
 │   ├── ruleset.md
 │   └── images/
 │
-└── scripts/                  # Utility scripts
+├── rules/                    # TCPA rule definitions
+└── scripts/                  # Build and utility scripts
 ```
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start Next.js development server |
-| `npm run build` | Build for production |
-| `npm run lint` | Lint code with ESLint |
-| `npm run test` | Run test suite |
-| `npm run tauri:dev` | Start Tauri development mode |
-| `npm run tauri:build` | Build Tauri desktop app |
-| `npm run demo` | Run demo scenario |
+```bash
+# Frontend (from /app directory)
+npm run dev           # Start Next.js dev server
+npm run build         # Build production bundle
+npm run lint          # Lint code
+
+# Tauri (from /app directory)
+npm run tauri dev     # Start Tauri dev mode
+npm run tauri build   # Build desktop executable
+```
 
 ## Code Style
 
@@ -164,65 +137,73 @@ whisperwire/
 - Prefer `const` over `let`
 - Use meaningful variable names
 - Add JSDoc comments for public APIs
-- Define types in `src/types/`
+- Define interfaces in `/types` directory
 
 ### React
 
 - Use functional components with hooks
 - Keep components small and focused
-- Use Framer Motion for animations
-- Follow the existing component patterns in `src/components/`
-
-### Rust (Tauri Backend)
-
-- Follow Rust idioms and best practices
-- Use `Result` types for error handling
-- Document public functions
-- Keep Tauri commands thin, delegate to modules
-
-### Styling
-
 - Use Tailwind CSS for styling
-- Follow the dark theme with glass morphism effects
-- Maintain the premium UI aesthetic
-- Test on both light and dark system preferences
+- Follow existing component patterns in `AgentView.tsx`, `AdminView.tsx`
+
+### Rust
+
+- Follow Rust conventions and idioms
+- Use descriptive error messages
+- Document public functions with `///` comments
+- Keep Tauri commands focused and minimal
+
+### Rules & Compliance
+
+- When adding new TCPA rules, follow the schema in `rules.ts`
+- Include `id`, `title`, `description`, `severity`, `category`, and `triggers`
+- Add corresponding Rust definitions in `rules.rs`
+- Update documentation in `docs/ruleset.md`
 
 ## Commits
 
 We follow conventional commits:
 
 ```
-feat: Add new consent revocation detection rule
-fix: Correct DNC phrase matching regex
-docs: Update installation instructions
-refactor: Simplify alert state management
+feat: Add new DNC verification rule
+fix: Correct time zone detection for calling hours
+docs: Update rule library documentation
+refactor: Simplify compliance score calculation
 test: Add unit tests for evaluator
-style: Fix inconsistent button spacing
+chore: Update dependencies
 ```
 
 ## Testing
 
-### Unit Tests
+### Running Tests
 
 ```bash
-npm run test
+# Frontend tests
+npm test
+
+# Rust tests (from /app/src-tauri)
+cargo test
 ```
 
 Tests should:
+
 - Be independent and isolated
 - Test one thing at a time
 - Have descriptive names
 - Cover edge cases
-- Test both rule matches and non-matches
+- Include compliance rule detection scenarios
 
-### Manual Testing
+## Adding New Rules
 
-When testing compliance detection:
-- Use realistic call transcripts
-- Test both agent and customer utterances
-- Verify alert severity levels
-- Check confidence scores
-- Test LLM mode if available
+When contributing new TCPA rules:
+
+1. Add the rule definition to `app/src/lib/rules.ts`
+2. Add corresponding Rust definition to `app/src-tauri/src/rules.rs`
+3. Include trigger phrases and regex patterns
+4. Define appropriate severity level (High/Medium/Low)
+5. Add suggested response text
+6. Update `docs/ruleset.md` with rule documentation
+7. Test with realistic transcript scenarios
 
 ## Documentation
 
@@ -230,9 +211,8 @@ When adding features:
 
 - Update relevant docs in `/docs`
 - Add JSDoc comments to code
-- Update README if user-facing
-- Include examples for new rules
-- Add screenshots for UI changes
+- Update README if adding major features
+- Include usage examples
 
 ## Review Process
 
@@ -240,15 +220,6 @@ When adding features:
 - At least one approval is required
 - CI must pass (tests, lint, build)
 - Changes should be squash-merged
-
-## Security Considerations
-
-Whisperwire handles sensitive call data. Please ensure:
-
-- **No data leaves the machine** – Maintain local-first architecture
-- **No external API calls** – Except to local Ollama
-- **No logging of PII** – Personal information should never be logged
-- **No telemetry** – Respect user privacy
 
 ## Questions?
 
@@ -260,6 +231,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ---
 
-<p align="center">
-  Thank you for contributing to Whisperwire! 🎉
-</p>
+Thank you for contributing to Whisperwire! 🎉
