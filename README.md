@@ -41,7 +41,12 @@ The primary interface for call center agents. Shows live transcript, real-time c
 
 ![Agent View](docs/images/agent-view.png)
 
-### Agent View with Active Alerts
+### Agent View with Active Call
+Full-featured view during an active call showing compliance score, expanded alert details, call notes, and suggested responses.
+
+![Agent View Active](docs/images/agent-view-active.png)
+
+### Agent View with Alerts
 When a compliance violation is detected (e.g., customer requests Do Not Call), alerts appear immediately with severity, confidence scores, and suggested responses.
 
 ![Agent Alerts](docs/images/agent-alerts.png)
@@ -62,11 +67,18 @@ Complete library of all 11 TCPA compliance rules with detailed explanations, leg
 
 ### Agent View
 - **Live Transcript** – Real-time display of conversation as it happens
+- **Compliance Score** – Dynamic percentage score that updates as alerts are triggered
 - **Compliance Alerts** – Instant notifications with severity levels (High/Medium/Low)
 - **Evidence Quotes** – Exact text that triggered the alert
 - **Confidence Scores** – How certain the system is about each violation
 - **Suggested Responses** – Pre-written compliant phrases to copy and use
+- **Expandable Alert Details** – Click alerts to see "Why It Matters" and suggested fixes
 - **Call Metadata** – Duration, call type, DNC status tracking
+- **Call Notes** – Add notes during the call for documentation
+- **Call History** – View recent calls with scores and alert counts
+- **Export Transcript** – Download call transcript with alerts as text file
+- **Sound Alerts** – Audio notification for high-severity issues (toggleable)
+- **Keyboard Shortcuts** – Enter to add message, Ctrl+Shift+N for notes
 
 ### Admin Dashboard  
 - **Analytics Summary** – Total calls, alerts, and alert rate statistics
