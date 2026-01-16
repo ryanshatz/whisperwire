@@ -15,7 +15,8 @@
   <a href="#usage">Usage</a> •
   <a href="#architecture">Architecture</a> •
   <a href="#rules">Rules</a> •
-  <a href="#llm-integration">LLM Integration</a>
+  <a href="#llm-integration">LLM Integration</a> •
+  <a href="CONTRIBUTING.md">Contributing</a>
 </p>
 
 ---
